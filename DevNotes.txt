@@ -1,0 +1,10 @@
+#Check that there are no environmental variables interfering
+Get-ChildItem Env:
+
+#To remove interfering variables
+Remove-Item -Path "Env:OPENAI_API_KEY"
+
+
+# After removing the api key, sometimes it is also necessary to replace it
+setx OPENAI_API_KEY "sample key"
+
