@@ -42,5 +42,4 @@ next-env.d.ts
 # Docs and processed text
 /docs
 /md_docs
-/Secondar-docs
 /chunked_text
