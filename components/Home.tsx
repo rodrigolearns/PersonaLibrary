@@ -74,8 +74,12 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     console.log('Form submitted with question:', question);
   
     // Get the names of the active personas
-    const activePersonas = activeButtons.map((isActive, i) => isActive ? PersonaConfiguration[i].name : null).filter(Boolean);
-  
+    const activePersonas = activeButtons.map((isActive, i) => isActive ? PersonaConfiguration[i].name : null).filter(Boolean) as string[];
+
+    /*// Create the chain with the active personas
+    const chains = await makeChain(pineconeStore, activePersonas);
+    */
+   
     // Send the question and chat history to the chat API endpoint
     const response = await fetch('/api/chat', {
       method: 'POST',
@@ -85,6 +89,7 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
       body: JSON.stringify({
         question,
         history,
+        activePersonas,
       }),
     });
   

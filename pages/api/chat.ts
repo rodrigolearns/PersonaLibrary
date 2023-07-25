@@ -10,7 +10,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { question, history } = req.body;
+  const { question, history, activePersonas } = req.body;
 
   console.log('question', question);
 
@@ -40,16 +40,18 @@ export default async function handler(
     );
 
     //create chain
-    const chain = makeChain(pineconeStore);
-    
-    //Ask a question using chat history
-    const response = await chain.call({
-      question: sanitizedQuestion,
-      chat_history: history || [],
-    });
+    const chains = await makeChain(pineconeStore, activePersonas);
 
-    console.log('response', response);
-    res.status(200).json(response);
+
+  //Ask a question using chat history
+  const responses = await Promise.all(chains.map(chain => chain.call({
+    question: sanitizedQuestion,
+    chat_history: history || [],
+  })));
+
+  console.log('responses', responses);
+  res.status(200).json(responses);
+
   } catch (error: any) {
     console.log('error', error);
     res.status(500).json({ error: error.message || 'Something went wrong' });
