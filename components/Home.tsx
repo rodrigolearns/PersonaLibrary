@@ -8,7 +8,7 @@ import ButtonContext from '@/contexts/buttonContext';
 import { MessageList } from './MessageList';
 import { ChatForm } from './ChatForm';
 import { makeChain } from '@/utils/makechain'; // Import the makeChain function
-import { PersonaConfiguration } from '@/utils/PersonaConfigurations'; // Import the PersonaConfiguration
+import { PersonaConfiguration } from '@/config/PersonaConfigurations'; // Import the PersonaConfiguration
 
 // Define the Home component
 export default function Home() {
@@ -79,7 +79,7 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     /*// Create the chain with the active personas
     const chains = await makeChain(pineconeStore, activePersonas);
     */
-   
+
     // Send the question and chat history to the chat API endpoint
     const response = await fetch('/api/chat', {
       method: 'POST',

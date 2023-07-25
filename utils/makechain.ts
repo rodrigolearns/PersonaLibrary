@@ -2,7 +2,7 @@
 import { OpenAI } from 'langchain/llms/openai';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
-import { PersonaConfiguration } from './PersonaConfigurations';
+import { PersonaConfiguration } from '../config/PersonaConfigurations';
 
 const CONDENSE_PROMPT = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
