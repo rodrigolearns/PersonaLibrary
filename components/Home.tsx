@@ -9,9 +9,6 @@ import { MessageList } from './MessageList';
 import { ChatForm } from './ChatForm';
 import { makeChain } from '@/utils/makechain'; // Import the makeChain function
 import { PersonaConfiguration } from '@/utils/PersonaConfigurations'; // Import the PersonaConfiguration
-import { pinecone } from '@/utils/pinecone-client';
-import { PineconeStore } from '@/types/pinecone'; // Replace with the actual import path
-
 
 // Define the Home component
 export default function Home() {
@@ -79,12 +76,22 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     // Get the names of the active personas
     const activePersonas = activeButtons.map((isActive, i) => isActive ? PersonaConfiguration[i].name : null).filter(Boolean);
   
-    // Create a chain for the chat
-    const chain = await makeChain(pineconeStore, activePersonas as string[]);
+    // Send the question and chat history to the chat API endpoint
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        question,
+        history,
+      }),
+    });
   
-    // Call the chain with the question and handle the responses
-    const responses = await Promise.all(activePersonas.map(() => chain.call({ question, chat_history: history })));
-    handleMultipleResponses(responses);
+    const data = await response.json();
+  
+    // Handle the responses
+    handleMultipleResponses(data);
   };
   
   // Define function to prevent empty submissions

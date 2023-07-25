@@ -4,13 +4,12 @@ import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { makeChain } from '@/utils/makechain';
 import { pinecone } from '@/utils/pinecone-client';
 import { PINECONE_INDEX_NAME, PINECONE_NAME_SPACE } from '@/config/pinecone';
+import { pineconeStore } from '@/utils/pinecone-store';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log('Received request body:', req.body); // Add this line
-
   const { question, history } = req.body;
 
   console.log('question', question);
@@ -41,7 +40,8 @@ export default async function handler(
     );
 
     //create chain
-    const chain = makeChain(vectorStore);
+    const chain = makeChain(pineconeStore);
+    
     //Ask a question using chat history
     const response = await chain.call({
       question: sanitizedQuestion,
