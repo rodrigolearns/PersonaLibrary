@@ -9,6 +9,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  console.log('Received request body:', req.body); // Add this line
+
   const { question, history } = req.body;
 
   console.log('question', question);
