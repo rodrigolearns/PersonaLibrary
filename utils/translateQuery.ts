@@ -3,7 +3,7 @@ import { PersonaConfiguration } from '../config/PersonaConfigurations';
 
 async function translateQuery(userQuery: string, activePersonas: string[]) {
   const model = new OpenAI({
-    temperature: 0, // increase temperature to get more creative answers
+    temperature: 0.3, // increase temperature to get more creative answers
     modelName: 'gpt-3.5-turbo', //change this to gpt-4 if you have access
   });
 
@@ -21,7 +21,7 @@ async function translateQuery(userQuery: string, activePersonas: string[]) {
     These are the personas trying to help the user with their query:
     ${activePersonasDetails.map(p => `${p.name}: ${p.QA_PROMPT}`).join('\n')}
     The user's query is: "${userQuery}".
-    Please separate the query into subqueries and assign these subqueries to the most appropriate personas based on their QA_PROMPT.
+    Please rephrase the query into subqueries that are tailored to the expertise of each persona based on their QA_PROMPT.
     The response should be in the format "persona: subquery" for each persona, and nothing else.
   `;
 

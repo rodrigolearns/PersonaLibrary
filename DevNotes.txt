@@ -8,3 +8,6 @@ Remove-Item -Path "Env:OPENAI_API_KEY"
 # After removing the api key, sometimes it is also necessary to replace it
 setx OPENAI_API_KEY "sample key"
 
+# If that does not works
+$env:OPENAI_API_KEY="KEYHERE"
+
