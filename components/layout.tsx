@@ -1,18 +1,13 @@
 import React, { useContext } from 'react';
 import ButtonContext from '@/contexts/buttonContext';
+import { PersonaConfiguration } from '@/config/PersonaConfigurations'; // Import PersonaConfiguration
 
 interface LayoutProps {
   children?: React.ReactNode;
 }
 
 export default function Layout({ children }: LayoutProps) {
-  const buttons = [
-    'Eric Reits',
-    'CORE lab 2',
-    'CORE lab 3',
-    'CORE lab 4',
-    'CORE lab 5',
-  ];
+  const buttons = PersonaConfiguration.map(persona => persona.name); // Use the name property of each persona
   
   const context = useContext(ButtonContext);
 

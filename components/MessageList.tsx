@@ -55,7 +55,7 @@ export const MessageList: React.FC<MessageListProps> = ({ messages, activeButton
               <ReactMarkdown linkTarget="_blank">
                 {message.message}
               </ReactMarkdown>
-              <p>{message.persona}</p> // Display the name of the persona
+              <p>{message.persona}</p>
             </div>
           </div>
         );

@@ -7,8 +7,8 @@ import { Document } from 'langchain/document';
 import ButtonContext from '@/contexts/buttonContext';
 import { MessageList } from './MessageList';
 import { ChatForm } from './ChatForm';
-import { makeChain } from '@/utils/makechain'; // Import the makeChain function
-import { PersonaConfiguration } from '@/config/PersonaConfigurations'; // Import the PersonaConfiguration
+import { translateQuery } from '@/utils/translateQuery';
+import { PersonaConfiguration } from '@/config/PersonaConfigurations';
 
 // Define the Home component
 export default function Home() {
@@ -54,8 +54,8 @@ export default function Home() {
     }));
   };
 
-// Define function to handle form submission
-async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  // Define function to handle form submission
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     // Prevent default form submission behavior
     e.preventDefault();
   
@@ -76,25 +76,30 @@ async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     // Get the names of the active personas
     const activePersonas = activeButtons.map((isActive, i) => isActive ? PersonaConfiguration[i].name : null).filter(Boolean) as string[];
 
-    /*// Create the chain with the active personas
-    const chains = await makeChain(pineconeStore, activePersonas);
-    */
+    // Call translateQuery with the user's query and the active personas
+    const translatedQueries = await translateQuery(question, activePersonas);
 
-    // Send the question and chat history to the chat API endpoint
+    // Send the translated queries to the backend
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        messages: translatedQueries, // replace "messages" with the appropriate field name
         question,
         history,
         activePersonas,
       }),
     });
-  
+
+    // Check if the API call was successful
+    if (!response.ok) {
+      throw new Error(`API call failed with status ${response.status}`);
+    }
+
     const data = await response.json();
-  
+
     // Handle the responses
     handleMultipleResponses(data);
   };
